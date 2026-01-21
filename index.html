@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RESPALDO TÉCNICO</title>
+    
+    <link rel="icon" href="https://fav.farm/🛡️" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #0b1011; --bg-card: #151c1e; --primary-green: #38b000;
+            --text-main: #ffffff; --text-muted: #cbd5e1; --border-color: #334144;
+            --input-bg: #0b1011; --header-gradient: linear-gradient(135deg, #70e000, #38b000);
+            --transition: all 0.2s ease;
+        }
+
+        body { font-family: 'Quicksand', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 90px; }
+        
+        #led-strip { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--primary-green); box-shadow: 0 0 10px var(--primary-green); z-index: 10000; transition: width 0.5s ease; }
+        #led-strip.active { width: 100%; }
+
+        /* Abas */
+        .tabs { display: flex; width: 100%; max-width: 800px; margin-top: 10px; background: var(--bg-card); border-radius: 16px 16px 0 0; border: 1px solid var(--border-color); overflow: hidden; }
+        .tab-btn { flex: 1; padding: 18px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+        .tab-btn.active { color: var(--primary-green); background: rgba(56, 176, 0, 0.1); border-bottom: 3px solid var(--primary-green); }
+
+        .container { width: 100%; max-width: 800px; background: var(--bg-card); padding: 25px; border-radius: 0 0 24px 24px; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.4); box-sizing: border-box; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        h1 { background: var(--header-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; font-weight: 800; font-size: 1.6rem; margin: 10px 0 20px; }
+
+        .section-header { color: var(--primary-green); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin: 25px 0 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .full { grid-column: span 2; }
+
+        label { display: block; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); margin: 0 0 4px 4px; }
+        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; box-sizing: border-box; outline: none; }
+
+        .photo-area { border: 2px dashed var(--border-color); padding: 20px; text-align: center; border-radius: 12px; cursor: pointer; background: rgba(0,0,0,0.2); }
+        #preview-img { max-width: 100%; max-height: 250px; border-radius: 8px; margin: 10px auto; display: none; border: 1px solid var(--border-color); }
+
+        .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; background: var(--header-gradient); color: white; margin-top: 20px; }
+        
+        /* Lista de Registros */
+        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; }
+        .card-title { font-weight: 800; color: var(--primary-green); font-size: 1rem; margin-bottom: 4px; }
+        .card-meta { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 12px; }
+        .card-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .action-btn { padding: 12px 5px; border-radius: 8px; border: none; font-size: 0.6rem; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .btn-edit { background: #2c3e50; color: #fff; }
+        .btn-view { background: #34495e; color: #fff; }
+        .btn-print { background: #ffffff; color: #000; border: 1px solid #ddd; }
+
+        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+        /* MODO PDF (P&B) */
+        .pdf-mode { background: white !important; color: black !important; }
+        .pdf-mode .container { background: white !important; border: 1px solid #000 !important; color: black !important; box-shadow: none !important; }
+        .pdf-mode h1 { background: none !important; -webkit-text-fill-color: black !important; color: black !important; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .pdf-mode .section-header { color: black !important; border-bottom: 1px solid #000 !important; }
+        .pdf-mode label { color: #000 !important; }
+        .pdf-mode input, .pdf-mode textarea, .pdf-mode select { background: white !important; color: black !important; border: 1px solid #ccc !important; }
+        .pdf-mode #preview-img { filter: grayscale(100%); border: 1px solid #000 !important; }
+
+        @media (max-width: 600px) { 
+            .grid { grid-template-columns: 1fr; } 
+            .card-actions { grid-template-columns: 1fr; }
+            .action-btn { padding: 15px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="led-strip"></div>
+<button class="pdf-float" onclick="gerarPDF()" title="Imprimir PDF">📄</button>
+
+<div class="tabs">
+    <button class="tab-btn active" id="tab-form-btn" onclick="openTab('form')">Formulário</button>
+    <button class="tab-btn" id="tab-list-btn" onclick="openTab('list'); carregarRegistros();">Registros</button>
+</div>
+
+<div id="tab-form" class="tab-content active container">
+    <div id="printable-area">
+        <h1>RESPALDO TÉCNICO</h1>
+        <input type="hidden" id="doc-id">
+        
+        <div class="section-header">Identificação de Entrada</div>
+        <div class="grid">
+            <div class="form-group full">
+                <label>Data de Recebimento</label>
+                <input type="datetime-local" id="data_recebimento">
+            </div>
+            <div class="form-group">
+                <label>Sessão / Setor</label>
+                <input type="text" id="sessao" placeholder="Ex: Financeiro">
+            </div>
+            <div class="form-group">
+                <label>Patrimônio / SN</label>
+                <input type="text" id="patrimonio" placeholder="Ex: 004598">
+            </div>
+            <div class="form-group">
+                <label>Solicitante</label>
+                <input type="text" id="solicitante" placeholder="Nome do cliente">
+            </div>
+            <div class="form-group">
+                <label>Logística</label>
+                <select id="logistica">
+                    <option value="Entregue no Setor">Entregue no Setor</option>
+                    <option value="Fomos Buscar">Fomos Buscar</option>
+                </select>
+            </div>
+            <div class="form-group full">
+                <label>Técnico Responsável</label>
+                <input type="text" id="responsavel" placeholder="Quem atendeu">
+            </div>
+        </div>
+
+        <div class="section-header">Estado Físico</div>
+        <div class="grid">
+            <div class="form-group full">
+                <label>Descrição e Avarias</label>
+                <textarea id="descricao" rows="3" placeholder="Detalhes físicos..."></textarea>
+            </div>
+            <div class="form-group full">
+                <div class="photo-area" onclick="document.getElementById('foto').click()">
+                    <span id="photo-label">📸 Foto de Respaldo</span>
+                    <input type="file" id="foto" accept="image/*" style="display:none" onchange="previewImage(this)">
+                    <img id="preview-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">Finalização</div>
+        <div class="grid">
+            <div class="form-group">
+                <label>Data de Entrega</label>
+                <input type="date" id="data_entrega">
+            </div>
+            <div class="form-group">
+                <label>Testemunha</label>
+                <input type="text" id="testemunha" placeholder="Opcional">
+            </div>
+        </div>
+    </div>
+    <button class="btn-main" onclick="salvarNoFirebase()">Salvar Registro</button>
+    <button class="btn-main" style="background: #334144; margin-top: 10px;" onclick="limpar()">Novo / Limpar</button>
+</div>
+
+<div id="tab-list" class="tab-content container">
+    <h1>REGISTROS SALVOS</h1>
+    <input type="text" id="filtro" placeholder="🔍 Buscar por patrimônio ou nome..." onkeyup="filtrar()" style="margin-bottom: 20px;">
+    <div id="lista-container"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, updateDoc, doc, getDocs, orderBy, query, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAX5nWuxp4zFm0uYkNGuD4bYS_TpUFTbSo",
+        authDomain: "pivot-6df25.firebaseapp.com",
+        projectId: "pivot-6df25",
+        storageBucket: "pivot-6df25.firebasestorage.app",
+        messagingSenderId: "807771695926",
+        appId: "1:807771695926:web:0c5bb3c69ae9cbce7f6197"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let currentPhoto = "";
+
+    window.openTab = (tabName) => {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.getElementById('tab-' + tabName + '-btn').classList.add('active');
+    };
+
+    window.previewImage = (input) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            currentPhoto = e.target.result;
+            const img = document.getElementById('preview-img');
+            img.src = currentPhoto;
+            img.style.display = 'block';
+            document.getElementById('photo-label').style.display = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+    };
+
+    window.salvarNoFirebase = async () => {
+        const id = document.getElementById('doc-id').value;
+        const dados = {
+            data_recebimento: document.getElementById('data_recebimento').value,
+            sessao: document.getElementById('sessao').value,
+            patrimonio: document.getElementById('patrimonio').value,
+            solicitante: document.getElementById('solicitante').value,
+            logistica: document.getElementById('logistica').value,
+            responsavel: document.getElementById('responsavel').value,
+            descricao: document.getElementById('descricao').value,
+            data_entrega: document.getElementById('data_entrega').value,
+            testemunha: document.getElementById('testemunha').value,
+            foto: currentPhoto,
+            update_at: new Date().getTime()
+        };
+
+        if(!dados.solicitante || !dados.patrimonio) return alert("Preencha Solicitante e Patrimônio!");
+
+        try {
+            document.getElementById('led-strip').classList.add('active');
+            if(id) {
+                await updateDoc(doc(db, "respaldos", id), dados);
+                alert("Registro Atualizado!");
+            } else {
+                dados.created_at = new Date().getTime();
+                await addDoc(collection(db, "respaldos"), dados);
+                alert("Registro Criado!");
+            }
+            limpar();
+        } catch(e) { alert("Erro: " + e.message); }
+        finally { document.getElementById('led-strip').classList.remove('active'); }
+    };
+
+    window.carregarRegistros = async () => {
+        const container = document.getElementById('lista-container');
+        const q = query(collection(db, "respaldos"), orderBy("created_at", "desc"));
+        const snap = await getDocs(q);
+        container.innerHTML = "";
+
+        snap.forEach(documento => {
+            const d = documento.data();
+            const div = document.createElement('div');
+            div.className = "history-card";
+            div.setAttribute('data-search', (d.solicitante + d.patrimonio).toLowerCase());
+            div.innerHTML = `
+                <div class="card-title">${d.solicitante.toUpperCase()}</div>
+                <div class="card-meta">📅 ${new Date(d.data_recebimento).toLocaleDateString()} | 🏷️ PAT: ${d.patrimonio}</div>
+                <div class="card-actions">
+                    <button class="action-btn btn-view" onclick="editar('${documento.id}')">Ver</button>
+                    <button class="action-btn btn-edit" onclick="editar('${documento.id}')">Editar</button>
+                    <button class="action-btn btn-print" onclick="imprimirDireto('${documento.id}')">PDF</button>
+                </div>`;
+            container.appendChild(div);
+        });
+    };
+
+    window.filtrar = () => {
+        const termo = document.getElementById('filtro').value.toLowerCase();
+        document.querySelectorAll('.history-card').forEach(card => {
+            const txt = card.getAttribute('data-search');
+            card.style.display = txt.includes(termo) ? 'block' : 'none';
+        });
+    };
+
+    window.editar = async (id) => {
+        const docRef = await getDoc(doc(db, "respaldos", id));
+        const d = docRef.data();
+        document.getElementById('doc-id').value = id;
+        document.getElementById('data_recebimento').value = d.data_recebimento;
+        document.getElementById('sessao').value = d.sessao;
+        document.getElementById('patrimonio').value = d.patrimonio;
+        document.getElementById('solicitante').value = d.solicitante;
+        document.getElementById('logistica').value = d.logistica;
+        document.getElementById('responsavel').value = d.responsavel;
+        document.getElementById('descricao').value = d.descricao;
+        document.getElementById('data_entrega').value = d.data_entrega;
+        document.getElementById('testemunha').value = d.testemunha;
+        currentPhoto = d.foto;
+        if(currentPhoto){
+            document.getElementById('preview-img').src = currentPhoto;
+            document.getElementById('preview-img').style.display = 'block';
+            document.getElementById('photo-label').style.display = 'none';
+        }
+        openTab('form');
+        window.scrollTo(0,0);
+    };
+
+    window.imprimirDireto = async (id) => {
+        await window.editar(id);
+        setTimeout(() => { window.gerarPDF(); }, 600);
+    };
+
+    window.gerarPDF = () => {
+        const element = document.getElementById('printable-area');
+        const nome = document.getElementById('solicitante').value || "registro";
+        document.body.classList.add('pdf-mode');
+        
+        const opt = {
+            margin: 10,
+            filename: `RESPALDO_${nome}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            document.body.classList.remove('pdf-mode');
+        });
+    };
+
+    window.limpar = () => {
+        document.getElementById('doc-id').value = "";
+        document.getElementById('preview-img').style.display = 'none';
+        document.getElementById('photo-label').style.display = 'block';
+        currentPhoto = "";
+        document.querySelectorAll('input, textarea, select').forEach(i => i.value = "");
+        configData();
+    };
+
+    function configData() {
+        const agora = new Date();
+        agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+        document.getElementById('data_recebimento').value = agora.toISOString().slice(0, 16);
+    }
+
+    window.onload = configData;
+    window.editar = editar; window.imprimirDireto = imprimirDireto;
+</script>
+</body>
+</html>
