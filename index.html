@@ -8,6 +8,7 @@
     <link rel="icon" href="https://fav.farm/🛡️" />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
@@ -16,14 +17,23 @@
             --text-main: #ffffff; --text-muted: #cbd5e1; --border-color: #334144;
             --input-bg: #0b1011; --header-gradient: linear-gradient(135deg, #70e000, #38b000);
             --transition: all 0.2s ease;
+            --danger: #9d0208;
         }
+
+        /* SweetAlert Customization para Dark Mode */
+        .swal2-popup {
+            background: var(--bg-card) !important;
+            color: var(--text-main) !important;
+            border-radius: 20px !important;
+            border: 1px solid var(--border-color) !important;
+        }
+        .swal2-title, .swal2-html-container { color: var(--text-main) !important; }
 
         body { font-family: 'Quicksand', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 90px; }
         
         #led-strip { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--primary-green); box-shadow: 0 0 10px var(--primary-green); z-index: 10000; transition: width 0.5s ease; }
         #led-strip.active { width: 100%; }
 
-        /* Abas */
         .tabs { display: flex; width: 100%; max-width: 800px; margin-top: 10px; background: var(--bg-card); border-radius: 16px 16px 0 0; border: 1px solid var(--border-color); overflow: hidden; }
         .tab-btn { flex: 1; padding: 18px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
         .tab-btn.active { color: var(--primary-green); background: rgba(56, 176, 0, 0.1); border-bottom: 3px solid var(--primary-green); }
@@ -40,24 +50,27 @@
         .full { grid-column: span 2; }
 
         label { display: block; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); margin: 0 0 4px 4px; }
-        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; box-sizing: border-box; outline: none; }
+        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary-green); }
 
         .photo-area { border: 2px dashed var(--border-color); padding: 20px; text-align: center; border-radius: 12px; cursor: pointer; background: rgba(0,0,0,0.2); }
         #preview-img { max-width: 100%; max-height: 250px; border-radius: 8px; margin: 10px auto; display: none; border: 1px solid var(--border-color); }
 
         .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; background: var(--header-gradient); color: white; margin-top: 20px; }
         
-        /* Lista de Registros */
-        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; }
+        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; transition: 0.3s; }
+        .history-card:hover { border-color: var(--primary-green); }
         .card-title { font-weight: 800; color: var(--primary-green); font-size: 1rem; margin-bottom: 4px; }
         .card-meta { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 12px; }
-        .card-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .action-btn { padding: 12px 5px; border-radius: 8px; border: none; font-size: 0.6rem; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .action-btn { padding: 10px 2px; border-radius: 8px; border: none; font-size: 0.55rem; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
         .btn-edit { background: #2c3e50; color: #fff; }
         .btn-view { background: #34495e; color: #fff; }
         .btn-print { background: #ffffff; color: #000; border: 1px solid #ddd; }
+        .btn-delete { background: var(--danger); color: #fff; }
 
-        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.3s; }
+        .pdf-float:active { transform: scale(0.9); }
 
         /* MODO PDF (P&B) */
         .pdf-mode { background: white !important; color: black !important; }
@@ -70,8 +83,8 @@
 
         @media (max-width: 600px) { 
             .grid { grid-template-columns: 1fr; } 
-            .card-actions { grid-template-columns: 1fr; }
-            .action-btn { padding: 15px; font-size: 0.7rem; }
+            .card-actions { grid-template-columns: repeat(2, 1fr); }
+            .action-btn { padding: 15px; font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -125,7 +138,7 @@
         <div class="grid">
             <div class="form-group full">
                 <label>Descrição e Avarias</label>
-                <textarea id="descricao" rows="3" placeholder="Detalhes físicos..."></textarea>
+                <textarea id="descricao" rows="3" placeholder="Relate riscos, peças faltando..."></textarea>
             </div>
             <div class="form-group full">
                 <div class="photo-area" onclick="document.getElementById('foto').click()">
@@ -160,7 +173,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, updateDoc, doc, getDocs, orderBy, query, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, getDocs, orderBy, query, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAX5nWuxp4zFm0uYkNGuD4bYS_TpUFTbSo",
@@ -174,6 +187,14 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     let currentPhoto = "";
+
+    // Configuração global do SweetAlert2 para combinar com o tema
+    const Toast = Swal.mixin({
+        background: '#151c1e',
+        color: '#fff',
+        confirmButtonColor: '#38b000',
+        cancelButtonColor: '#334144'
+    });
 
     window.openTab = (tabName) => {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -210,21 +231,26 @@
             update_at: new Date().getTime()
         };
 
-        if(!dados.solicitante || !dados.patrimonio) return alert("Preencha Solicitante e Patrimônio!");
+        if(!dados.solicitante || !dados.patrimonio) {
+            return Toast.fire({ icon: 'warning', title: 'Atenção', text: 'Preencha ao menos Solicitante e Patrimônio.' });
+        }
 
         try {
             document.getElementById('led-strip').classList.add('active');
             if(id) {
                 await updateDoc(doc(db, "respaldos", id), dados);
-                alert("Registro Atualizado!");
+                Toast.fire({ icon: 'success', title: 'Sucesso!', text: 'Registro atualizado com êxito.' });
             } else {
                 dados.created_at = new Date().getTime();
                 await addDoc(collection(db, "respaldos"), dados);
-                alert("Registro Criado!");
+                Toast.fire({ icon: 'success', title: 'Salvo!', text: 'Novo respaldo criado com sucesso.' });
             }
             limpar();
-        } catch(e) { alert("Erro: " + e.message); }
-        finally { document.getElementById('led-strip').classList.remove('active'); }
+        } catch(e) { 
+            Toast.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível salvar: ' + e.message }); 
+        } finally { 
+            document.getElementById('led-strip').classList.remove('active'); 
+        }
     };
 
     window.carregarRegistros = async () => {
@@ -245,9 +271,34 @@
                     <button class="action-btn btn-view" onclick="editar('${documento.id}')">Ver</button>
                     <button class="action-btn btn-edit" onclick="editar('${documento.id}')">Editar</button>
                     <button class="action-btn btn-print" onclick="imprimirDireto('${documento.id}')">PDF</button>
+                    <button class="action-btn btn-delete" onclick="apagarRegistro('${documento.id}')">Apagar</button>
                 </div>`;
             container.appendChild(div);
         });
+    };
+
+    window.apagarRegistro = async (id) => {
+        const result = await Toast.fire({
+            title: 'Tem certeza?',
+            text: "Esta ação não pode ser desfeita!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, apagar!',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                document.getElementById('led-strip').classList.add('active');
+                await deleteDoc(doc(db, "respaldos", id));
+                Toast.fire({ icon: 'success', title: 'Excluído!', text: 'O registro foi removido.' });
+                carregarRegistros();
+            } catch(e) { 
+                Toast.fire({ icon: 'error', title: 'Erro', text: 'Falha ao deletar: ' + e.message }); 
+            } finally { 
+                document.getElementById('led-strip').classList.remove('active'); 
+            }
+        }
     };
 
     window.filtrar = () => {
@@ -272,18 +323,23 @@
         document.getElementById('data_entrega').value = d.data_entrega;
         document.getElementById('testemunha').value = d.testemunha;
         currentPhoto = d.foto;
+        const img = document.getElementById('preview-img');
         if(currentPhoto){
-            document.getElementById('preview-img').src = currentPhoto;
-            document.getElementById('preview-img').style.display = 'block';
+            img.src = currentPhoto;
+            img.style.display = 'block';
             document.getElementById('photo-label').style.display = 'none';
+        } else {
+            img.style.display = 'none';
+            document.getElementById('photo-label').style.display = 'block';
         }
         openTab('form');
-        window.scrollTo(0,0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     window.imprimirDireto = async (id) => {
         await window.editar(id);
-        setTimeout(() => { window.gerarPDF(); }, 600);
+        Toast.fire({ title: 'Gerando PDF...', timer: 1500, didOpen: () => Swal.showLoading() });
+        setTimeout(() => { window.gerarPDF(); }, 800);
     };
 
     window.gerarPDF = () => {
@@ -320,7 +376,7 @@
     }
 
     window.onload = configData;
-    window.editar = editar; window.imprimirDireto = imprimirDireto;
+    window.editar = editar; window.imprimirDireto = imprimirDireto; window.apagarRegistro = apagarRegistro;
 </script>
 </body>
 </html>
