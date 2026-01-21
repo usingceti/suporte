@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>RESPALDO TÉCNICO</title>
-    
     <link rel="icon" href="https://fav.farm/🛡️" />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -16,17 +15,11 @@
             --bg-body: #0b1011; --bg-card: #151c1e; --primary-green: #38b000;
             --text-main: #ffffff; --text-muted: #cbd5e1; --border-color: #334144;
             --input-bg: #0b1011; --header-gradient: linear-gradient(135deg, #70e000, #38b000);
-            --transition: all 0.2s ease;
             --danger: #9d0208;
+            --status-pendente: #ffb703; --status-ok: #38b000;
         }
 
-        /* SweetAlert Customization para Dark Mode */
-        .swal2-popup {
-            background: var(--bg-card) !important;
-            color: var(--text-main) !important;
-            border-radius: 20px !important;
-            border: 1px solid var(--border-color) !important;
-        }
+        .swal2-popup { background: var(--bg-card) !important; color: var(--text-main) !important; border-radius: 20px !important; border: 1px solid var(--border-color) !important; }
         .swal2-title, .swal2-html-container { color: var(--text-main) !important; }
 
         body { font-family: 'Quicksand', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 90px; }
@@ -43,49 +36,83 @@
         .tab-content.active { display: block; }
 
         h1 { background: var(--header-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; font-weight: 800; font-size: 1.6rem; margin: 10px 0 20px; }
-
         .section-header { color: var(--primary-green); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin: 25px 0 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
 
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .full { grid-column: span 2; }
 
         label { display: block; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); margin: 0 0 4px 4px; }
-        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; box-sizing: border-box; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--primary-green); }
+        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; box-sizing: border-box; outline: none; }
 
         .photo-area { border: 2px dashed var(--border-color); padding: 20px; text-align: center; border-radius: 12px; cursor: pointer; background: rgba(0,0,0,0.2); }
         #preview-img { max-width: 100%; max-height: 250px; border-radius: 8px; margin: 10px auto; display: none; border: 1px solid var(--border-color); }
 
         .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; background: var(--header-gradient); color: white; margin-top: 20px; }
         
-        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; transition: 0.3s; }
-        .history-card:hover { border-color: var(--primary-green); }
-        .card-title { font-weight: 800; color: var(--primary-green); font-size: 1rem; margin-bottom: 4px; }
+        .badge { font-size: 0.55rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; }
+        .badge-pendente { background: var(--status-pendente); color: #000; }
+        .badge-concluido { background: var(--status-ok); color: #fff; }
+
+        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; }
+        .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .card-title { font-weight: 800; color: var(--primary-green); font-size: 1rem; }
         .card-meta { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 12px; }
+        
         .card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .action-btn { padding: 10px 2px; border-radius: 8px; border: none; font-size: 0.55rem; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .action-btn { padding: 10px 2px; border-radius: 8px; border: none; font-size: 0.55rem; font-weight: 800; cursor: pointer; text-transform: uppercase; }
         .btn-edit { background: #2c3e50; color: #fff; }
         .btn-view { background: #34495e; color: #fff; }
         .btn-print { background: #ffffff; color: #000; border: 1px solid #ddd; }
         .btn-delete { background: var(--danger); color: #fff; }
 
-        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.3s; }
-        .pdf-float:active { transform: scale(0.9); }
+        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-        /* MODO PDF (P&B) */
-        .pdf-mode { background: white !important; color: black !important; }
-        .pdf-mode .container { background: white !important; border: 1px solid #000 !important; color: black !important; box-shadow: none !important; }
-        .pdf-mode h1 { background: none !important; -webkit-text-fill-color: black !important; color: black !important; border-bottom: 2px solid #000; padding-bottom: 10px; }
-        .pdf-mode .section-header { color: black !important; border-bottom: 1px solid #000 !important; }
-        .pdf-mode label { color: #000 !important; }
-        .pdf-mode input, .pdf-mode textarea, .pdf-mode select { background: white !important; color: black !important; border: 1px solid #ccc !important; }
-        .pdf-mode #preview-img { filter: grayscale(100%); border: 1px solid #000 !important; }
-
-        @media (max-width: 600px) { 
-            .grid { grid-template-columns: 1fr; } 
-            .card-actions { grid-template-columns: repeat(2, 1fr); }
-            .action-btn { padding: 15px; font-size: 0.65rem; }
+        /* =========================================
+           Ajustes Específicos para PDF de 1 Página
+           ========================================= */
+        .pdf-mode { background: white !important; color: black !important; padding: 0 !important; }
+        .pdf-mode .container { 
+            background: white !important; 
+            border: none !important; 
+            color: black !important; 
+            box-shadow: none !important; 
+            padding: 10px !important; 
+            width: 100% !important;
+            max-width: 100% !important;
         }
+        .pdf-mode h1 { 
+            background: none !important; 
+            -webkit-text-fill-color: black !important; 
+            color: black !important; 
+            border-bottom: 2px solid #000; 
+            margin: 5px 0 15px 0 !important;
+            font-size: 1.3rem !important;
+        }
+        .pdf-mode .section-header { 
+            color: black !important; 
+            border-bottom: 1px solid #000 !important; 
+            margin: 10px 0 5px 0 !important;
+            font-size: 0.6rem !important;
+        }
+        .pdf-mode label { color: #000 !important; font-size: 0.6rem !important; }
+        .pdf-mode input, .pdf-mode textarea, .pdf-mode select { 
+            background: white !important; 
+            color: black !important; 
+            border: 1px solid #ccc !important; 
+            padding: 8px !important;
+            font-size: 0.75rem !important;
+        }
+        /* Limita a foto para não empurrar o conteúdo */
+        .pdf-mode #preview-img { 
+            max-height: 180px !important; 
+            width: auto !important;
+            margin: 5px auto !important;
+            filter: grayscale(100%);
+        }
+        .pdf-mode .grid { gap: 8px !important; }
+        .pdf-mode .photo-area { border: 1px solid #ccc !important; padding: 5px !important; }
+
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .card-actions { grid-template-columns: repeat(2, 1fr); } .action-btn { padding: 15px; font-size: 0.65rem; } }
     </style>
 </head>
 <body>
@@ -103,23 +130,30 @@
         <h1>RESPALDO TÉCNICO</h1>
         <input type="hidden" id="doc-id">
         
-        <div class="section-header">Identificação de Entrada</div>
+        <div class="section-header">Status e Atendimento</div>
         <div class="grid">
             <div class="form-group full">
+                <label>Status</label>
+                <select id="status_servico">
+                    <option value="Pendente">🟡 Pendente / Entrada</option>
+                    <option value="Concluído">🟢 Concluído / Saída</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Data de Recebimento</label>
                 <input type="datetime-local" id="data_recebimento">
             </div>
             <div class="form-group">
                 <label>Sessão / Setor</label>
-                <input type="text" id="sessao" placeholder="Ex: Financeiro">
+                <input type="text" id="sessao">
             </div>
             <div class="form-group">
                 <label>Patrimônio / SN</label>
-                <input type="text" id="patrimonio" placeholder="Ex: 004598">
+                <input type="text" id="patrimonio">
             </div>
             <div class="form-group">
                 <label>Solicitante</label>
-                <input type="text" id="solicitante" placeholder="Nome do cliente">
+                <input type="text" id="solicitante">
             </div>
             <div class="form-group">
                 <label>Logística</label>
@@ -130,18 +164,18 @@
             </div>
             <div class="form-group full">
                 <label>Técnico Responsável</label>
-                <input type="text" id="responsavel" placeholder="Quem atendeu">
+                <input type="text" id="responsavel" onchange="localStorage.setItem('pref_tecnico', this.value)">
             </div>
         </div>
 
         <div class="section-header">Estado Físico</div>
         <div class="grid">
             <div class="form-group full">
-                <label>Descrição e Avarias</label>
-                <textarea id="descricao" rows="3" placeholder="Relate riscos, peças faltando..."></textarea>
+                <label>Observações / Avarias</label>
+                <textarea id="descricao" rows="2" placeholder="Descreva o estado do equipamento..."></textarea>
             </div>
             <div class="form-group full">
-                <div class="photo-area" onclick="document.getElementById('foto').click()">
+                <div class="photo-area" id="area-foto" onclick="document.getElementById('foto').click()">
                     <span id="photo-label">📸 Foto de Respaldo</span>
                     <input type="file" id="foto" accept="image/*" style="display:none" onchange="previewImage(this)">
                     <img id="preview-img">
@@ -156,8 +190,8 @@
                 <input type="date" id="data_entrega">
             </div>
             <div class="form-group">
-                <label>Testemunha</label>
-                <input type="text" id="testemunha" placeholder="Opcional">
+                <label>Recebido por / Testemunha</label>
+                <input type="text" id="testemunha">
             </div>
         </div>
     </div>
@@ -167,6 +201,7 @@
 
 <div id="tab-list" class="tab-content container">
     <h1>REGISTROS SALVOS</h1>
+    <div id="stats" style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; text-align: center;"></div>
     <input type="text" id="filtro" placeholder="🔍 Buscar por patrimônio ou nome..." onkeyup="filtrar()" style="margin-bottom: 20px;">
     <div id="lista-container"></div>
 </div>
@@ -187,14 +222,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     let currentPhoto = "";
-
-    // Configuração global do SweetAlert2 para combinar com o tema
-    const Toast = Swal.mixin({
-        background: '#151c1e',
-        color: '#fff',
-        confirmButtonColor: '#38b000',
-        cancelButtonColor: '#334144'
-    });
+    const Toast = Swal.mixin({ background: '#151c1e', color: '#fff', confirmButtonColor: '#38b000', cancelButtonColor: '#334144' });
 
     window.openTab = (tabName) => {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -208,8 +236,7 @@
         reader.onload = e => {
             currentPhoto = e.target.result;
             const img = document.getElementById('preview-img');
-            img.src = currentPhoto;
-            img.style.display = 'block';
+            img.src = currentPhoto; img.style.display = 'block';
             document.getElementById('photo-label').style.display = 'none';
         };
         reader.readAsDataURL(input.files[0]);
@@ -218,6 +245,7 @@
     window.salvarNoFirebase = async () => {
         const id = document.getElementById('doc-id').value;
         const dados = {
+            status: document.getElementById('status_servico').value,
             data_recebimento: document.getElementById('data_recebimento').value,
             sessao: document.getElementById('sessao').value,
             patrimonio: document.getElementById('patrimonio').value,
@@ -231,26 +259,21 @@
             update_at: new Date().getTime()
         };
 
-        if(!dados.solicitante || !dados.patrimonio) {
-            return Toast.fire({ icon: 'warning', title: 'Atenção', text: 'Preencha ao menos Solicitante e Patrimônio.' });
-        }
+        if(!dados.solicitante || !dados.patrimonio) return Toast.fire({ icon: 'warning', title: 'Atenção', text: 'Preencha Solicitante e Patrimônio.' });
 
         try {
             document.getElementById('led-strip').classList.add('active');
             if(id) {
                 await updateDoc(doc(db, "respaldos", id), dados);
-                Toast.fire({ icon: 'success', title: 'Sucesso!', text: 'Registro atualizado com êxito.' });
+                Toast.fire({ icon: 'success', title: 'Atualizado!' });
             } else {
                 dados.created_at = new Date().getTime();
                 await addDoc(collection(db, "respaldos"), dados);
-                Toast.fire({ icon: 'success', title: 'Salvo!', text: 'Novo respaldo criado com sucesso.' });
+                Toast.fire({ icon: 'success', title: 'Salvo!' });
             }
             limpar();
-        } catch(e) { 
-            Toast.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível salvar: ' + e.message }); 
-        } finally { 
-            document.getElementById('led-strip').classList.remove('active'); 
-        }
+        } catch(e) { Toast.fire({ icon: 'error', title: 'Erro', text: e.message }); }
+        finally { document.getElementById('led-strip').classList.remove('active'); }
     };
 
     window.carregarRegistros = async () => {
@@ -258,14 +281,19 @@
         const q = query(collection(db, "respaldos"), orderBy("created_at", "desc"));
         const snap = await getDocs(q);
         container.innerHTML = "";
+        document.getElementById('stats').innerText = `${snap.size} registros salvos`;
 
         snap.forEach(documento => {
             const d = documento.data();
+            const statusClass = d.status === 'Concluído' ? 'badge-concluido' : 'badge-pendente';
             const div = document.createElement('div');
             div.className = "history-card";
             div.setAttribute('data-search', (d.solicitante + d.patrimonio).toLowerCase());
             div.innerHTML = `
-                <div class="card-title">${d.solicitante.toUpperCase()}</div>
+                <div class="card-header-row">
+                    <div class="card-title">${d.solicitante.toUpperCase()}</div>
+                    <span class="badge ${statusClass}">${d.status || 'Pendente'}</span>
+                </div>
                 <div class="card-meta">📅 ${new Date(d.data_recebimento).toLocaleDateString()} | 🏷️ PAT: ${d.patrimonio}</div>
                 <div class="card-actions">
                     <button class="action-btn btn-view" onclick="editar('${documento.id}')">Ver</button>
@@ -278,41 +306,18 @@
     };
 
     window.apagarRegistro = async (id) => {
-        const result = await Toast.fire({
-            title: 'Tem certeza?',
-            text: "Esta ação não pode ser desfeita!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sim, apagar!',
-            cancelButtonText: 'Cancelar'
-        });
-
-        if (result.isConfirmed) {
-            try {
-                document.getElementById('led-strip').classList.add('active');
-                await deleteDoc(doc(db, "respaldos", id));
-                Toast.fire({ icon: 'success', title: 'Excluído!', text: 'O registro foi removido.' });
-                carregarRegistros();
-            } catch(e) { 
-                Toast.fire({ icon: 'error', title: 'Erro', text: 'Falha ao deletar: ' + e.message }); 
-            } finally { 
-                document.getElementById('led-strip').classList.remove('active'); 
-            }
+        const res = await Toast.fire({ title: 'Excluir?', text: "Esta ação é permanente.", icon: 'warning', showCancelButton: true });
+        if (res.isConfirmed) {
+            await deleteDoc(doc(db, "respaldos", id));
+            carregarRegistros();
         }
-    };
-
-    window.filtrar = () => {
-        const termo = document.getElementById('filtro').value.toLowerCase();
-        document.querySelectorAll('.history-card').forEach(card => {
-            const txt = card.getAttribute('data-search');
-            card.style.display = txt.includes(termo) ? 'block' : 'none';
-        });
     };
 
     window.editar = async (id) => {
         const docRef = await getDoc(doc(db, "respaldos", id));
         const d = docRef.data();
         document.getElementById('doc-id').value = id;
+        document.getElementById('status_servico').value = d.status || 'Pendente';
         document.getElementById('data_recebimento').value = d.data_recebimento;
         document.getElementById('sessao').value = d.sessao;
         document.getElementById('patrimonio').value = d.patrimonio;
@@ -324,38 +329,38 @@
         document.getElementById('testemunha').value = d.testemunha;
         currentPhoto = d.foto;
         const img = document.getElementById('preview-img');
-        if(currentPhoto){
-            img.src = currentPhoto;
-            img.style.display = 'block';
-            document.getElementById('photo-label').style.display = 'none';
-        } else {
-            img.style.display = 'none';
-            document.getElementById('photo-label').style.display = 'block';
-        }
-        openTab('form');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if(currentPhoto){ img.src = currentPhoto; img.style.display = 'block'; document.getElementById('photo-label').style.display = 'none'; }
+        else { img.style.display = 'none'; document.getElementById('photo-label').style.display = 'block'; }
+        openTab('form'); window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     window.imprimirDireto = async (id) => {
         await window.editar(id);
-        Toast.fire({ title: 'Gerando PDF...', timer: 1500, didOpen: () => Swal.showLoading() });
-        setTimeout(() => { window.gerarPDF(); }, 800);
+        Toast.fire({ title: 'Preparando Página Única...', timer: 1200, didOpen: () => Swal.showLoading() });
+        setTimeout(() => { window.gerarPDF(); }, 1000);
     };
 
     window.gerarPDF = () => {
         const element = document.getElementById('printable-area');
-        const nome = document.getElementById('solicitante').value || "registro";
+        const nomeCli = document.getElementById('solicitante').value || "Registro";
+        
+        // Ativa modo de compressão para PDF
         document.body.classList.add('pdf-mode');
         
         const opt = {
-            margin: 10,
-            filename: `RESPALDO_${nome}.pdf`,
+            margin: 5,
+            filename: `RESPALDO_${nomeCli}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true,
+                letterRendering: true
+            },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
+            // Desativa modo PDF para voltar ao layout normal do site
             document.body.classList.remove('pdf-mode');
         });
     };
@@ -365,18 +370,23 @@
         document.getElementById('preview-img').style.display = 'none';
         document.getElementById('photo-label').style.display = 'block';
         currentPhoto = "";
-        document.querySelectorAll('input, textarea, select').forEach(i => i.value = "");
+        document.querySelectorAll('input, textarea, select').forEach(i => { if(i.id !== 'responsavel') i.value = "" });
         configData();
     };
 
     function configData() {
-        const agora = new Date();
-        agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
-        document.getElementById('data_recebimento').value = agora.toISOString().slice(0, 16);
+        const agora = new Date(); agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+        if(!document.getElementById('data_recebimento').value) document.getElementById('data_recebimento').value = agora.toISOString().slice(0, 16);
+        const pref = localStorage.getItem('pref_tecnico');
+        if(pref) document.getElementById('responsavel').value = pref;
     }
 
     window.onload = configData;
     window.editar = editar; window.imprimirDireto = imprimirDireto; window.apagarRegistro = apagarRegistro;
+    window.filtrar = () => {
+        const t = document.getElementById('filtro').value.toLowerCase();
+        document.querySelectorAll('.history-card').forEach(c => c.style.display = c.getAttribute('data-search').includes(t) ? 'block' : 'none');
+    };
 </script>
 </body>
 </html>
