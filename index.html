@@ -19,10 +19,8 @@
             --status-pendente: #ffb703; --status-ok: #38b000;
         }
 
-        .swal2-popup { background: var(--bg-card) !important; color: var(--text-main) !important; border-radius: 20px !important; border: 1px solid var(--border-color) !important; }
-        .swal2-title, .swal2-html-container { color: var(--text-main) !important; }
-
         body { font-family: 'Quicksand', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 90px; }
+        .swal2-popup { background: var(--bg-card) !important; color: var(--text-main) !important; border-radius: 20px !important; border: 1px solid var(--border-color) !important; }
         
         #led-strip { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--primary-green); box-shadow: 0 0 10px var(--primary-green); z-index: 10000; transition: width 0.5s ease; }
         #led-strip.active { width: 100%; }
@@ -48,71 +46,25 @@
         #preview-img { max-width: 100%; max-height: 250px; border-radius: 8px; margin: 10px auto; display: none; border: 1px solid var(--border-color); }
 
         .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; background: var(--header-gradient); color: white; margin-top: 20px; }
-        
+        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; }
         .badge { font-size: 0.55rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; }
         .badge-pendente { background: var(--status-pendente); color: #000; }
         .badge-concluido { background: var(--status-ok); color: #fff; }
-
-        .history-card { background: var(--input-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 16px; margin-bottom: 12px; }
-        .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .card-title { font-weight: 800; color: var(--primary-green); font-size: 1rem; }
-        .card-meta { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 12px; }
-        
-        .card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
         .action-btn { padding: 10px 2px; border-radius: 8px; border: none; font-size: 0.55rem; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .btn-edit { background: #2c3e50; color: #fff; }
-        .btn-view { background: #34495e; color: #fff; }
-        .btn-print { background: #ffffff; color: #000; border: 1px solid #ddd; }
-        .btn-delete { background: var(--danger); color: #fff; }
 
-        .pdf-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        /* REGRAS ESTRITAS PARA PDF P&B */
+        .pdf-mode { background: #fff !important; color: #000 !important; filter: grayscale(1) !important; }
+        .pdf-mode .container { background: #fff !important; border: none !important; box-shadow: none !important; padding: 10px !important; }
+        .pdf-mode h1 { background: none !important; -webkit-background-clip: initial !important; -webkit-text-fill-color: #000 !important; color: #000 !important; border-bottom: 2px solid #000; margin-bottom: 10px !important; font-size: 1.2rem !important; }
+        .pdf-mode .section-header { color: #000 !important; border-bottom: 1px solid #000 !important; margin: 10px 0 5px !important; }
+        .pdf-mode input, .pdf-mode select, .pdf-mode textarea { border: 1px solid #000 !important; background: #fff !important; color: #000 !important; font-size: 0.8rem !important; }
+        .pdf-mode #preview-img { filter: grayscale(1) brightness(1.1) contrast(1.2) !important; max-height: 180px !important; border: 1px solid #000 !important; }
+        .pdf-mode label { color: #000 !important; }
 
-        /* =========================================
-           Ajustes Específicos para PDF de 1 Página
-           ========================================= */
-        .pdf-mode { background: white !important; color: black !important; padding: 0 !important; }
-        .pdf-mode .container { 
-            background: white !important; 
-            border: none !important; 
-            color: black !important; 
-            box-shadow: none !important; 
-            padding: 10px !important; 
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-        .pdf-mode h1 { 
-            background: none !important; 
-            -webkit-text-fill-color: black !important; 
-            color: black !important; 
-            border-bottom: 2px solid #000; 
-            margin: 5px 0 15px 0 !important;
-            font-size: 1.3rem !important;
-        }
-        .pdf-mode .section-header { 
-            color: black !important; 
-            border-bottom: 1px solid #000 !important; 
-            margin: 10px 0 5px 0 !important;
-            font-size: 0.6rem !important;
-        }
-        .pdf-mode label { color: #000 !important; font-size: 0.6rem !important; }
-        .pdf-mode input, .pdf-mode textarea, .pdf-mode select { 
-            background: white !important; 
-            color: black !important; 
-            border: 1px solid #ccc !important; 
-            padding: 8px !important;
-            font-size: 0.75rem !important;
-        }
-        /* Limita a foto para não empurrar o conteúdo */
-        .pdf-mode #preview-img { 
-            max-height: 180px !important; 
-            width: auto !important;
-            margin: 5px auto !important;
-            filter: grayscale(100%);
-        }
-        .pdf-mode .grid { gap: 8px !important; }
-        .pdf-mode .photo-area { border: 1px solid #ccc !important; padding: 5px !important; }
-
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .card-actions { grid-template-columns: repeat(2, 1fr); } .action-btn { padding: 15px; font-size: 0.65rem; } }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .card-actions { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -172,11 +124,11 @@
         <div class="grid">
             <div class="form-group full">
                 <label>Observações / Avarias</label>
-                <textarea id="descricao" rows="2" placeholder="Descreva o estado do equipamento..."></textarea>
+                <textarea id="descricao" rows="2" placeholder="Descreva o estado..."></textarea>
             </div>
             <div class="form-group full">
-                <div class="photo-area" id="area-foto" onclick="document.getElementById('foto').click()">
-                    <span id="photo-label">📸 Foto de Respaldo</span>
+                <div class="photo-area" onclick="document.getElementById('foto').click()">
+                    <span id="photo-label">📸 Tirar Foto ou Galeria</span>
                     <input type="file" id="foto" accept="image/*" style="display:none" onchange="previewImage(this)">
                     <img id="preview-img">
                 </div>
@@ -202,13 +154,13 @@
 <div id="tab-list" class="tab-content container">
     <h1>REGISTROS SALVOS</h1>
     <div id="stats" style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; text-align: center;"></div>
-    <input type="text" id="filtro" placeholder="🔍 Buscar por patrimônio ou nome..." onkeyup="filtrar()" style="margin-bottom: 20px;">
+    <input type="text" id="filtro" placeholder="🔍 Buscar..." onkeyup="filtrar()" style="margin-bottom: 20px;">
     <div id="lista-container"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, getDocs, orderBy, query, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getFirestore, enableIndexedDbPersistence, collection, addDoc, updateDoc, deleteDoc, doc, getDocs, orderBy, query, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAX5nWuxp4zFm0uYkNGuD4bYS_TpUFTbSo",
@@ -222,7 +174,9 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     let currentPhoto = "";
-    const Toast = Swal.mixin({ background: '#151c1e', color: '#fff', confirmButtonColor: '#38b000', cancelButtonColor: '#334144' });
+    const Toast = Swal.mixin({ background: '#151c1e', color: '#fff', confirmButtonColor: '#38b000' });
+
+    enableIndexedDbPersistence(db).catch(() => console.warn("Cache offline ativo."));
 
     window.openTab = (tabName) => {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -231,15 +185,30 @@
         document.getElementById('tab-' + tabName + '-btn').classList.add('active');
     };
 
+    // FUNÇÃO COM COMPRESSOR DE IMAGEM INTEGRADO
     window.previewImage = (input) => {
+        const file = input.files[0];
+        if (!file) return;
         const reader = new FileReader();
-        reader.onload = e => {
-            currentPhoto = e.target.result;
-            const img = document.getElementById('preview-img');
-            img.src = currentPhoto; img.style.display = 'block';
-            document.getElementById('photo-label').style.display = 'none';
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width; let height = img.height;
+                const MAX = 800;
+                if (width > height) { if (width > MAX) { height *= MAX / width; width = MAX; } }
+                else { if (height > MAX) { width *= MAX / height; height = MAX; } }
+                canvas.width = width; canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                currentPhoto = canvas.toDataURL('image/jpeg', 0.6); // Foto leve e rápida
+                const previewImg = document.getElementById('preview-img');
+                previewImg.src = currentPhoto; previewImg.style.display = 'block';
+                document.getElementById('photo-label').style.display = 'none';
+            };
+            img.src = e.target.result;
         };
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(file);
     };
 
     window.salvarNoFirebase = async () => {
@@ -259,7 +228,7 @@
             update_at: new Date().getTime()
         };
 
-        if(!dados.solicitante || !dados.patrimonio) return Toast.fire({ icon: 'warning', title: 'Atenção', text: 'Preencha Solicitante e Patrimônio.' });
+        if(!dados.solicitante || !dados.patrimonio) return Toast.fire({ icon: 'warning', title: 'Preencha os campos!' });
 
         try {
             document.getElementById('led-strip').classList.add('active');
@@ -272,7 +241,7 @@
                 Toast.fire({ icon: 'success', title: 'Salvo!' });
             }
             limpar();
-        } catch(e) { Toast.fire({ icon: 'error', title: 'Erro', text: e.message }); }
+        } catch(e) { Toast.fire({ icon: 'error', title: 'Erro de Tamanho', text: "A foto ainda é muito grande ou houve erro na rede." }); }
         finally { document.getElementById('led-strip').classList.remove('active'); }
     };
 
@@ -281,8 +250,7 @@
         const q = query(collection(db, "respaldos"), orderBy("created_at", "desc"));
         const snap = await getDocs(q);
         container.innerHTML = "";
-        document.getElementById('stats').innerText = `${snap.size} registros salvos`;
-
+        document.getElementById('stats').innerText = `${snap.size} registros`;
         snap.forEach(documento => {
             const d = documento.data();
             const statusClass = d.status === 'Concluído' ? 'badge-concluido' : 'badge-pendente';
@@ -290,33 +258,30 @@
             div.className = "history-card";
             div.setAttribute('data-search', (d.solicitante + d.patrimonio).toLowerCase());
             div.innerHTML = `
-                <div class="card-header-row">
-                    <div class="card-title">${d.solicitante.toUpperCase()}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-weight:800; color:var(--primary-green);">${d.solicitante.toUpperCase()}</div>
                     <span class="badge ${statusClass}">${d.status || 'Pendente'}</span>
                 </div>
-                <div class="card-meta">📅 ${new Date(d.data_recebimento).toLocaleDateString()} | 🏷️ PAT: ${d.patrimonio}</div>
+                <div style="font-size:0.7rem; color:var(--text-muted); margin-top:5px;">📅 ${new Date(d.data_recebimento).toLocaleDateString()} | 🏷️ PAT: ${d.patrimonio}</div>
                 <div class="card-actions">
-                    <button class="action-btn btn-view" onclick="editar('${documento.id}')">Ver</button>
-                    <button class="action-btn btn-edit" onclick="editar('${documento.id}')">Editar</button>
-                    <button class="action-btn btn-print" onclick="imprimirDireto('${documento.id}')">PDF</button>
-                    <button class="action-btn btn-delete" onclick="apagarRegistro('${documento.id}')">Apagar</button>
+                    <button class="action-btn" style="background:#2c3e50; color:#fff;" onclick="editar('${documento.id}')">Ver</button>
+                    <button class="action-btn" style="background:#34495e; color:#fff;" onclick="editar('${documento.id}')">Editar</button>
+                    <button class="action-btn" style="background:#ffffff; color:#000; border:1px solid #ddd;" onclick="imprimirDireto('${documento.id}')">PDF</button>
+                    <button class="action-btn" style="background:var(--danger); color:#fff;" onclick="apagarRegistro('${documento.id}')">Apagar</button>
                 </div>`;
             container.appendChild(div);
         });
     };
 
     window.apagarRegistro = async (id) => {
-        const res = await Toast.fire({ title: 'Excluir?', text: "Esta ação é permanente.", icon: 'warning', showCancelButton: true });
-        if (res.isConfirmed) {
-            await deleteDoc(doc(db, "respaldos", id));
-            carregarRegistros();
-        }
+        const res = await Toast.fire({ title: 'Excluir?', text: "Permanente.", icon: 'warning', showCancelButton: true });
+        if (res.isConfirmed) { await deleteDoc(doc(db, "respaldos", id)); carregarRegistros(); }
     };
 
     window.editar = async (id) => {
         const docRef = await getDoc(doc(db, "respaldos", id));
         const d = docRef.data();
-        document.getElementById('doc-id').value = id;
+        document.getElementById('doc-id').value = id; // IMPORTANTE: Define o ID para o Firebase saber qual atualizar
         document.getElementById('status_servico').value = d.status || 'Pendente';
         document.getElementById('data_recebimento').value = d.data_recebimento;
         document.getElementById('sessao').value = d.sessao;
@@ -336,33 +301,15 @@
 
     window.imprimirDireto = async (id) => {
         await window.editar(id);
-        Toast.fire({ title: 'Preparando Página Única...', timer: 1200, didOpen: () => Swal.showLoading() });
-        setTimeout(() => { window.gerarPDF(); }, 1000);
+        Toast.fire({ title: 'Gerando PDF...', timer: 1000, didOpen: () => Swal.showLoading() });
+        setTimeout(() => { window.gerarPDF(); }, 800);
     };
 
     window.gerarPDF = () => {
         const element = document.getElementById('printable-area');
-        const nomeCli = document.getElementById('solicitante').value || "Registro";
-        
-        // Ativa modo de compressão para PDF
         document.body.classList.add('pdf-mode');
-        
-        const opt = {
-            margin: 5,
-            filename: `RESPALDO_${nomeCli}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-                scale: 2, 
-                useCORS: true,
-                letterRendering: true
-            },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(element).save().then(() => {
-            // Desativa modo PDF para voltar ao layout normal do site
-            document.body.classList.remove('pdf-mode');
-        });
+        const opt = { margin: 5, filename: `RESPALDO.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+        html2pdf().set(opt).from(element).save().then(() => document.body.classList.remove('pdf-mode'));
     };
 
     window.limpar = () => {
